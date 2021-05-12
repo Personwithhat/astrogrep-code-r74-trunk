@@ -10,3 +10,15 @@ C:\Users\perso\Downloads\astrogrep-code-r74-trunk\AstroGrep\libAstroGrep\obj\Deb
 C:\Users\perso\Downloads\astrogrep-code-r74-trunk\AstroGrep\libAstroGrep\obj\Debug\libAstroGrep.csproj.CopyComplete
 C:\Users\perso\Downloads\astrogrep-code-r74-trunk\AstroGrep\libAstroGrep\obj\Debug\libAstroGrep.dll
 C:\Users\perso\Downloads\astrogrep-code-r74-trunk\AstroGrep\libAstroGrep\obj\Debug\libAstroGrep.pdb
+D:\Github\astrogrep-code-r74-trunk\AstroGrep\libAstroGrep\bin\Debug\libAstroGrep.dll.config
+D:\Github\astrogrep-code-r74-trunk\AstroGrep\libAstroGrep\bin\Debug\libAstroGrep.dll
+D:\Github\astrogrep-code-r74-trunk\AstroGrep\libAstroGrep\bin\Debug\libAstroGrep.pdb
+D:\Github\astrogrep-code-r74-trunk\AstroGrep\libAstroGrep\bin\Debug\AstroGrep.Common.dll
+D:\Github\astrogrep-code-r74-trunk\AstroGrep\libAstroGrep\bin\Debug\NLog.dll
+D:\Github\astrogrep-code-r74-trunk\AstroGrep\libAstroGrep\bin\Debug\AstroGrep.Common.pdb
+D:\Github\astrogrep-code-r74-trunk\AstroGrep\libAstroGrep\bin\Debug\NLog.xml
+D:\Github\astrogrep-code-r74-trunk\AstroGrep\libAstroGrep\obj\Debug\libAstroGrep.csprojResolveAssemblyReference.cache
+D:\Github\astrogrep-code-r74-trunk\AstroGrep\libAstroGrep\obj\Debug\libAstroGrep.csproj.CoreCompileInputs.cache
+D:\Github\astrogrep-code-r74-trunk\AstroGrep\libAstroGrep\obj\Debug\libAstroGrep.csproj.CopyComplete
+D:\Github\astrogrep-code-r74-trunk\AstroGrep\libAstroGrep\obj\Debug\libAstroGrep.dll
+D:\Github\astrogrep-code-r74-trunk\AstroGrep\libAstroGrep\obj\Debug\libAstroGrep.pdb
