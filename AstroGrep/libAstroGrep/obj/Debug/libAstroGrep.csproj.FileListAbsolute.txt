@@ -1,0 +1,12 @@
+C:\Users\perso\Downloads\astrogrep-code-r74-trunk\AstroGrep\libAstroGrep\bin\Debug\libAstroGrep.dll.config
+C:\Users\perso\Downloads\astrogrep-code-r74-trunk\AstroGrep\libAstroGrep\bin\Debug\libAstroGrep.dll
+C:\Users\perso\Downloads\astrogrep-code-r74-trunk\AstroGrep\libAstroGrep\bin\Debug\libAstroGrep.pdb
+C:\Users\perso\Downloads\astrogrep-code-r74-trunk\AstroGrep\libAstroGrep\bin\Debug\AstroGrep.Common.dll
+C:\Users\perso\Downloads\astrogrep-code-r74-trunk\AstroGrep\libAstroGrep\bin\Debug\NLog.dll
+C:\Users\perso\Downloads\astrogrep-code-r74-trunk\AstroGrep\libAstroGrep\bin\Debug\AstroGrep.Common.pdb
+C:\Users\perso\Downloads\astrogrep-code-r74-trunk\AstroGrep\libAstroGrep\bin\Debug\NLog.xml
+C:\Users\perso\Downloads\astrogrep-code-r74-trunk\AstroGrep\libAstroGrep\obj\Debug\libAstroGrep.csprojResolveAssemblyReference.cache
+C:\Users\perso\Downloads\astrogrep-code-r74-trunk\AstroGrep\libAstroGrep\obj\Debug\libAstroGrep.csproj.CoreCompileInputs.cache
+C:\Users\perso\Downloads\astrogrep-code-r74-trunk\AstroGrep\libAstroGrep\obj\Debug\libAstroGrep.csproj.CopyComplete
+C:\Users\perso\Downloads\astrogrep-code-r74-trunk\AstroGrep\libAstroGrep\obj\Debug\libAstroGrep.dll
+C:\Users\perso\Downloads\astrogrep-code-r74-trunk\AstroGrep\libAstroGrep\obj\Debug\libAstroGrep.pdb

@@ -1,0 +1,7 @@
+C:\Users\perso\Downloads\astrogrep-code-r74-trunk\AstroGrep\AdminProcess\bin\Debug\AstroGrep.AdminProcess.exe.config
+C:\Users\perso\Downloads\astrogrep-code-r74-trunk\AstroGrep\AdminProcess\bin\Debug\AstroGrep.AdminProcess.exe
+C:\Users\perso\Downloads\astrogrep-code-r74-trunk\AstroGrep\AdminProcess\bin\Debug\AstroGrep.AdminProcess.pdb
+C:\Users\perso\Downloads\astrogrep-code-r74-trunk\AstroGrep\AdminProcess\obj\Debug\AdminProcess.csprojResolveAssemblyReference.cache
+C:\Users\perso\Downloads\astrogrep-code-r74-trunk\AstroGrep\AdminProcess\obj\Debug\AdminProcess.csproj.CoreCompileInputs.cache
+C:\Users\perso\Downloads\astrogrep-code-r74-trunk\AstroGrep\AdminProcess\obj\Debug\AstroGrep.AdminProcess.exe
+C:\Users\perso\Downloads\astrogrep-code-r74-trunk\AstroGrep\AdminProcess\obj\Debug\AstroGrep.AdminProcess.pdb
