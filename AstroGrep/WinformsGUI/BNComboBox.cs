@@ -11,16 +11,163 @@ namespace AstroGrep
     public delegate void BNDrawItemEventHandler(object sender, DrawItemEventArgs e);
     public delegate void BNMeasureItemEventHandler(object sender, MeasureItemEventArgs e);
 
-
-    public class TransparentTextBox : TextBox
+    public class HackyPanel : Panel
     {
-        public TransparentTextBox() {
-            this.SetStyle(ControlStyles.SupportsTransparentBackColor, true);
-            BackColor = Color.Transparent;
+        public TextBox _textBox;
+        
+        // TODO: Should be an Adorner??
+        public HackyPanel() {
+            SetStyle(ControlStyles.UserPaint, true);
+
+            _textBox = new TextBox();
+            _textBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            _textBox.Location = new System.Drawing.Point(0, 0);
+            _textBox.Size = new System.Drawing.Size(60, 14);
+            _textBox.TabIndex = 0;
+            _textBox.WordWrap = false;
+            _textBox.Margin = new Padding(0);
+            _textBox.TextAlign = HorizontalAlignment.Left;
+            _textBox.BackColor = Color.Orange;
+            _textBox.AutoSize = false;  // TODO: Should auto-adjust Panel on resize, its not happening though whoops?
+            //_textBox.Visible = false;
+            // _textBox.PasswordChar = ' ';
+            // this.Controls.Add(_textBox);
+
+            // Invisible un-interactable panel - Hides TextBox text
+            Bounds = _textBox.Bounds;
+            Enabled = false;
+            BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(15)))), ((int)(((byte)(6)))));
+
+            //_textBox.Resize += new EventHandler(onResize);
+            _textBox.TextChanged += new EventHandler(onTextChanged);
+        }
+
+        void onResize(object sender, EventArgs e)
+        {
+            BNComboBox c = this.Parent as BNComboBox;
+            c.AdjustControls();
+        }
+
+        public void onTextChanged(object sender, EventArgs e)
+        {
+            //OnTextChanged(e);
+            Invalidate(true);
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            // TODO: It's drawing text @#$4 blurred for some damn reason.
+            // If you disable aliasing it literally misses parts of the letters in the font??
+
+            Rectangle rectText = Bounds;
+            rectText.Location = new Point(0, 0);
+            //rectText.Offset(-3, -2);
+            //rectText.Size = rectOuter.Size;
+
+            var path = new GraphicsPath();
+            Font f = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            var fontObject = new FontObject(_textBox.Text, f);
+            fontObject.FillColor = ForeColor;
+            // fontObject.SizeInPoints = 12;
+
+            using (var format = new StringFormat(StringFormatFlags.NoWrap))
+            {
+                format.Alignment = StringAlignment.Near; //As selected
+                format.LineAlignment = StringAlignment.Center; //As selected
+
+                //path.AddString(fontObject.Text, fontObject.FontFamily, (int)fontObject.FontStyle, fontObject.SizeInEms, rectText, format);
+
+                // rectText.Offset(0,-15);
+                // path.AddString(fontObject.Text, new FontFamily("Arial"), (int)FontStyle.Regular, 14, rectText, format);
+
+                //rectText.Offset(0, -15);
+
+                e.Graphics.SmoothingMode = SmoothingMode.None;// SmoothingMode.AntiAlias;
+                e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
+                // The composition properties are useful when drawing on a composited surface
+                // when we simply draw on a Control's surface, these are useless
+                e.Graphics.CompositingMode = CompositingMode.SourceOver;
+                e.Graphics.CompositingQuality = CompositingQuality.HighQuality;
+
+                if (fontObject.Outlined)
+                {
+                    e.Graphics.DrawPath(fontObject.Outline, path);
+                }
+                using (var brush = new SolidBrush(fontObject.FillColor))
+                {
+                    e.Graphics.FillPath(brush, path);
+                }
+
+                e.Graphics.DrawString(_textBox.Text, f, new SolidBrush(ForeColor), rectText, format);
+
+                // TextRenderer.DrawText(e.Graphics, _textBox.Text, f, rectText, ForeColor, TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.WordBreak);
+
+               // e.Graphics.DrawRectangle(Pens.GreenYellow, rectText);
+                //e.Graphics.DrawRectangle(Pens.OrangeRed, _textBox.Bounds);
+
+            }
         }
     }
 
-        public class BNComboBox : ListControl
+    public class FontObject
+    {
+        private float currentScreenDPI = 0.0F;
+        private float m_SizeInPoints = 0.0F;
+        private float m_SizeInPixels = 0.0F;
+        public FontObject() 
+            : this(string.Empty, FontFamily.GenericSansSerif, FontStyle.Regular, 18F) { }
+        public FontObject(string text, Font font) 
+            : this(text, font.FontFamily, font.Style, font.SizeInPoints) { }
+        public FontObject(string text, FontFamily fontFamily, FontStyle fontStyle, float FontSize)
+        {
+            if (FontSize < 3) FontSize = 3;
+            using (Graphics g = Graphics.FromHwndInternal(IntPtr.Zero)) {
+                this.currentScreenDPI = g.DpiY; 
+            }
+            this.Text = text;
+            this.FontFamily = fontFamily;
+            this.SizeInPoints = FontSize;
+            this.SizeInEms = GetEmSize();
+            this.FillColor = Color.Black;
+            this.Outline = new Pen(Color.Black, 1);
+            this.Outlined = false;
+        }
+
+        public string Text { get; set; }
+        public FontStyle FontStyle { get; set; }
+        public FontFamily FontFamily { get; set; }
+        public Color FillColor { get; set; }
+        public Pen Outline { get; set; }
+        public bool Outlined { get; set; }
+        public float SizeInPoints {
+            get => this.m_SizeInPoints;
+            set {  this.m_SizeInPoints = value;
+                   this.m_SizeInPixels = (value * 72F) / this.currentScreenDPI;
+                   this.SizeInEms = GetEmSize();
+            }
+        }
+        public float SizeInPixels {
+            get => this.m_SizeInPixels;
+            set {  this.m_SizeInPixels = value;
+                   this.m_SizeInPoints = (value * this.currentScreenDPI) / 72F;
+                   this.SizeInEms = GetEmSize();
+            }
+        }
+
+        public float SizeInEms { get; private set; }
+        public PointF Location { get; set; }
+        public RectangleF DrawingBox { get; set; }
+
+        private float GetEmSize()
+        {
+            return (this.m_SizeInPoints * 
+                   (this.FontFamily.GetCellAscent(this.FontStyle) +
+                    this.FontFamily.GetCellDescent(this.FontStyle))) /
+                    this.FontFamily.GetEmHeight(this.FontStyle);
+        }
+    }
+
+    public class BNComboBox : ListControl
     {
         #region Variables
 
@@ -28,16 +175,16 @@ namespace AstroGrep
         private bool pressed = false;
         private bool resize = false;
 
-        private Color _backColor = Color.Purple;      // Button shading color
-        private Color _color1 = Color.Blue;        // Outer Rim color
-        private Color _color2 = Color.Red;         // Inner Rim color + separator
-        private Color _color3 = Color.Yellow;        // Bottom rim color
-        private Color _color4 = Color.Gold;          // Selection edge highlight color
+        private Color _backColor = Color.White;        // Button shading color
+        private Color _color1 = Color.Gray;            // Outer Rim color
+        private Color _color2 = Color.DimGray;         // Inner Rim color + separator
+        //private Color _color3 = Color.Yellow;
+        private Color _color4 = Color.Gold;            // Selection edge highlight color
         private BNRadius _radius = new BNRadius();
 
         private int _dropDownHeight = 200;
         private int _dropDownWidth = 0;
-        private int _maxDropDownItems = 8;
+        private int _maxDropDownItems = 30;
         
         private int _selectedIndex = -1;
 
@@ -51,8 +198,7 @@ namespace AstroGrep
         private ToolStripControlHost _controlHost;
         private ListBox _listBox;
         private ToolStripDropDown _popupControl;
-        private TransparentTextBox _textBox;
-       // private Panel _textBoxPanel;
+        private HackyPanel _hackBox;
 
         #endregion
 
@@ -92,11 +238,11 @@ namespace AstroGrep
             set { _color2 = value; Invalidate(true); }
         }
         
-        public Color Color3
-        {
-            get { return _color3; }
-            set { _color3 = value; Invalidate(true); }
-        }
+        //public Color Color3
+        //{
+        //    get { return _color3; }
+        //    set { _color3 = value; Invalidate(true); }
+       // }
 
         public Color Color4
         {
@@ -169,11 +315,11 @@ namespace AstroGrep
             
                 if (_dropDownStyle == ComboBoxStyle.DropDownList)
                 {
-                    _textBox.Visible = false;
+                    _hackBox._textBox.Visible = false;
                 }
                 else
                 {
-                    _textBox.Visible = true;
+                    _hackBox._textBox.Visible = true;
                 }
                 Invalidate(true);
             }
@@ -185,7 +331,7 @@ namespace AstroGrep
             set 
             { 
                 this._backColor = value;
-                _textBox.BackColor = value;
+                //_hackBox._textBox.BackColor = value;
                 Invalidate(true);
             }
         }
@@ -207,40 +353,24 @@ namespace AstroGrep
 
                 if (_isDroppedDown)
                 {
-                    _controlHost.Control.Width = _dropDownWidth;
+                    //_listBox.Refresh();
 
-                    _listBox.Refresh();
+                    // TODO: Need to click drop down twice before it updates with full length properly
+                    // For some reason doesn't go all the way the first time?? Weird....
+                    int w = _dropDownWidth;
+                    for(int i = 0; i < _listBox.Items.Count; i++)
+                    {
+                        int CurrentItemWidth = (int)Math.Ceiling(this.CreateGraphics().MeasureString(_listBox.Items[i].ToString(), _listBox.Font).Width) + 2;
+                        if (w < CurrentItemWidth)
+                            w = CurrentItemWidth;
+                    }
+                    _controlHost.Control.Width = w;
 
                     if (_listBox.Items.Count > 0) 
                     {
-                        int h = 0;
-                        int i = 0;
-                        int maxItemHeight = 0;
-                        int highestItemHeight = 0;
-                        foreach(object item in _listBox.Items)
-                        {
-                            int itHeight = _listBox.GetItemHeight(i);
-                            if (highestItemHeight < itHeight) 
-                            {
-                                highestItemHeight = itHeight;
-                            }
-                            h = h + itHeight;
-                            if (i <= (_maxDropDownItems - 1)) 
-                            {
-                                maxItemHeight = h;
-                            }
-                            i = i + 1;
-                        }
-
-                        if (maxItemHeight > _dropDownHeight)
-                            _listBox.Height = _dropDownHeight + 3;
-                        else
-                        {
-                            if (maxItemHeight > highestItemHeight )
-                                _listBox.Height = maxItemHeight + 3;
-                            else
-                                _listBox.Height = highestItemHeight + 3;
-                        }
+                        int itemCount = Math.Min(_listBox.Items.Count, _maxDropDownItems);
+                        _listBox.ItemHeight = 16;// _listBox.GetItemHeight(0);
+                        _listBox.Height = _listBox.ItemHeight * (itemCount+1);
                     }
                     else
                     {
@@ -288,21 +418,14 @@ namespace AstroGrep
             this.Height = 21;
             this.Width = 95;
 
-          //  _textBoxPanel = new Panel();
-
-            // PERSONAL TODO: Vertically align the text here! >.< 
             this.SuspendLayout();
-            _textBox = new TransparentTextBox();
-            _textBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            _textBox.Location = new System.Drawing.Point(0, 0);
-            _textBox.Size = new System.Drawing.Size(60, 13);
-            _textBox.TabIndex = 0;
-            _textBox.WordWrap = false;
-            _textBox.Margin = new Padding(0);
-            _textBox.TextAlign = HorizontalAlignment.Left;
-            this.Controls.Add(_textBox);
-            this.ResumeLayout(false);
+            _hackBox = new HackyPanel();
 
+            this.Controls.Add(_hackBox);
+            this.Controls.Add(_hackBox._textBox);
+            this.Controls.SetChildIndex(_hackBox, 0);
+
+            this.ResumeLayout(false);
 
             AdjustControls();
 
@@ -311,6 +434,7 @@ namespace AstroGrep
             _listBox.BorderStyle = BorderStyle.FixedSingle;
             _listBox.SelectionMode = SelectionMode.One;
             _listBox.BindingContext = new BindingContext();
+            _listBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
 
             _controlHost = new ToolStripControlHost(_listBox);
             _controlHost.Padding = new Padding(0);
@@ -333,9 +457,8 @@ namespace AstroGrep
 
             _popupControl.Closed += new ToolStripDropDownClosedEventHandler(_popupControl_Closed);
 
-            _textBox.Resize += new EventHandler(_textBox_Resize);
-            _textBox.TextChanged += new EventHandler(_textBox_TextChanged);
-            // System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(15)))), ((int)(((byte)(6)))));
+
+            BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(15)))), ((int)(((byte)(6)))));
             ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
         }
 
@@ -369,7 +492,7 @@ namespace AstroGrep
 
         protected override void OnForeColorChanged(EventArgs e)
         {
-            _textBox.ForeColor = this.ForeColor;
+            _hackBox._textBox.ForeColor = this.ForeColor;
             base.OnForeColorChanged(e);
         }
 
@@ -400,7 +523,7 @@ namespace AstroGrep
             set
             {
                 resize = true;
-                _textBox.Font = value;
+                _hackBox._textBox.Font = value;
                 base.Font = value;
                 Invalidate(true);
             }
@@ -436,7 +559,7 @@ namespace AstroGrep
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
-            _textBox.Focus();
+            _hackBox._textBox.Focus();
             if ((this.RectangleToScreen(rectBtn).Contains(MousePosition) || (DropDownStyle == ComboBoxStyle.DropDownList)))
             {
                 pressed = true;
@@ -518,7 +641,7 @@ namespace AstroGrep
             else
                 Invalidate(true);
 
-            if (DesignMode)
+            //if (DesignMode)
                 _dropDownWidth = this.Width;
         }
 
@@ -526,28 +649,19 @@ namespace AstroGrep
         {
             get
             {
-                return _textBox.Text;
+                return _hackBox._textBox.Text;
             }
             set
             {
-                _textBox.Text = value;
-                base.Text = _textBox.Text;
-                OnTextChanged(EventArgs.Empty);
+                _hackBox._textBox.Text = value;
+                _hackBox.onTextChanged(this, EventArgs.Empty);
+                //base.Text = _hackBox._textBox.Text;
             }
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-
-            //content border
-            Rectangle rectCont = rectContent;
-            rectCont.X += 1;
-            rectCont.Y += 1;
-            rectCont.Width -= 3;
-            rectCont.Height -= 3;
-            GraphicsPath pathContentBorder = CreateRoundRectangle(rectCont, Radius.TopLeft, Radius.TopRight, Radius.BottomRight,
-                Radius.BottomLeft);
 
             //button border
             Rectangle rectButton = rectBtn;
@@ -560,11 +674,11 @@ namespace AstroGrep
             //outer border
             Rectangle rectOuter = rectContent;
             rectOuter.Width -= 1;
-            rectOuter.Height -= 2;
+            rectOuter.Height -= 1;
             GraphicsPath pathOuterBorder = CreateRoundRectangle(rectOuter, Radius.TopLeft, Radius.TopRight, Radius.BottomRight,
                 Radius.BottomLeft);
 
-            //inner border
+            //inner/content border
             Rectangle rectInner = rectContent;
             rectInner.X += 1;
             rectInner.Y += 1;
@@ -573,6 +687,10 @@ namespace AstroGrep
             GraphicsPath pathInnerBorder = CreateRoundRectangle(rectInner, Radius.TopLeft, Radius.TopRight, Radius.BottomRight,
                 Radius.BottomLeft);
 
+            //e.Graphics.DrawRectangle(new Pen(Color.Red), rectOuter);
+           // e.Graphics.DrawRectangle(new Pen(Color.Blue), rectInner);
+
+            
             //brushes and pens
             Brush brInnerBrush = new LinearGradientBrush(
                 new Rectangle(rectInner.X,rectInner.Y,rectInner.Width,rectInner.Height+1), 
@@ -604,16 +722,15 @@ namespace AstroGrep
                     LinearGradientMode.Vertical);
 
             //draw
-            e.Graphics.FillPath(brBackground, pathContentBorder);
+            e.Graphics.FillPath(brBackground, pathInnerBorder);
             if (DropDownStyle != ComboBoxStyle.DropDownList)
             {
                 e.Graphics.FillPath(brButton, pathBtnBorder);
             }
             e.Graphics.DrawPath(penOuterBorder, pathOuterBorder);
             e.Graphics.DrawPath(penInnerBorder, pathInnerBorder);
-
+           
             e.Graphics.DrawLine(penLeftButton, rectBtn.Left + 1, rectInner.Top+1, rectBtn.Left + 1, rectInner.Bottom -1);
-            
 
             //Glimph
             Rectangle rectGlimph = rectButton;
@@ -636,26 +753,8 @@ namespace AstroGrep
             br.Dispose();
             path.Dispose();
 
+            //e.Graphics.DrawRectangle(Pens.OrangeRed, rectContent);
 
-            //text
-            if (DropDownStyle == ComboBoxStyle.DropDownList)
-            {
-                StringFormat sf = StringFormat.GenericDefault;// new StringFormat(StringFormatFlags.NoWrap);
-                sf.Alignment = StringAlignment.Near;
-
-                Rectangle rectText = _textBox.Bounds;
-                rectText.Offset(-3, -2);
-
-                SolidBrush foreBrush = new SolidBrush(ForeColor);
-                if (Enabled)
-                {
-                    e.Graphics.DrawString(_textBox.Text, this.Font, foreBrush, rectText.Location);
-                }
-                else
-                {
-                    ControlPaint.DrawStringDisabled(e.Graphics, _textBox.Text, Font, BackColor, rectText, sf);
-                }
-            }
             /*
             Dim foreBrush As SolidBrush = New SolidBrush(color)
             If (enabled) Then
@@ -667,11 +766,10 @@ namespace AstroGrep
             foreBrush.Dispose()*/
 
 
-            pathContentBorder.Dispose();
             pathOuterBorder.Dispose();
             pathInnerBorder.Dispose();
             pathBtnBorder.Dispose();
-
+/*
             penOuterBorder.Dispose();
             penInnerBorder.Dispose();
             penLeftButton.Dispose();
@@ -679,7 +777,7 @@ namespace AstroGrep
             brBackground.Dispose();
             brInnerBrush.Dispose();
             brButtonLeft.Dispose();
-            brButton.Dispose();
+            brButton.Dispose();*/
         }
 
         #endregion
@@ -688,6 +786,20 @@ namespace AstroGrep
 
 
         #region ListControlOverrides
+        public int MeasureDisplayStringWidth(Graphics graphics, string text, Font font)
+        {
+            System.Drawing.StringFormat format = new System.Drawing.StringFormat();
+            System.Drawing.RectangleF rect = new System.Drawing.RectangleF(0, 0, 1000, 1000);
+            System.Drawing.CharacterRange[] ranges = { new System.Drawing.CharacterRange(0, text.Length) };
+            System.Drawing.Region[] regions = new System.Drawing.Region[1];
+
+            format.SetMeasurableCharacterRanges(ranges);
+
+            regions = graphics.MeasureCharacterRanges(text, font, rect, format);
+            rect = regions[0].GetBounds(graphics);
+
+            return (int)(rect.Right + 1.0f);
+        }
 
         public override int SelectedIndex
         {
@@ -706,7 +818,7 @@ namespace AstroGrep
                     {
                         _listBox.SelectedIndex = value;
                         _selectedIndex = value;
-                        _textBox.Text = _listBox.GetItemText(_listBox.SelectedItem);
+                        Text = _listBox.GetItemText(_listBox.SelectedItem);
                         OnSelectedIndexChanged(EventArgs.Empty);
                     }
                 }
@@ -822,13 +934,31 @@ namespace AstroGrep
 
         void _listBox_DrawItem(object sender, DrawItemEventArgs e)
         {
+          //  if (e.Index >= 0)
+          //  {
+        //        if (DrawItem != null)
+        //        {
+        //            DrawItem(this, e);
+       //         }
+      //      }
+
+            //ComboBox cBox = sender as ComboBox;
+            e.DrawBackground();
+
+            // A dropdownlist may initially have no item selected, so skip the highlighting:
             if (e.Index >= 0)
             {
-                if (DrawItem != null)
-                {
-                    DrawItem(this, e);
-                }
+                Brush bColor = new SolidBrush(System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(15)))), ((int)(((byte)(6))))));
+                Brush text = new SolidBrush(System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(177)))), ((int)(((byte)(10))))));
+                Brush back = new SolidBrush(System.Drawing.Color.Black);
+                Brush brush = ((e.State & DrawItemState.Selected) > 0) ? text : new SolidBrush(ForeColor);
+                //Rectangle rectangle = new Rectangle(0, e.Bounds.Top, e.Bounds.Width, e.Bounds.Height);
+                e.Graphics.FillRectangle((e.State & DrawItemState.Selected) > 0 ? back : bColor, e.Bounds);
+                e.Graphics.DrawString(this.Items[e.Index].ToString(), e.Font, brush, e.Bounds, StringFormat.GenericDefault);
+
+                text.Dispose(); back.Dispose(); brush.Dispose();
             }
+            e.DrawFocusRectangle();
         }
 
         void _listBox_MeasureItem(object sender, MeasureItemEventArgs e)
@@ -850,44 +980,27 @@ namespace AstroGrep
             }
             Invalidate(true);
         }
-
-
-
-        void _textBox_Resize(object sender, EventArgs e)
-        {
-            this.AdjustControls();
-        }
-
-        void _textBox_TextChanged(object sender, EventArgs e)
-        {
-            OnTextChanged(e);
-        }
-
         #endregion
-
-
-
 
         #region PrivateMethods
 
-        private void AdjustControls()
+        public void AdjustControls()
         {
             this.SuspendLayout();
 
+            var textBox = _hackBox._textBox;
+
             resize = true;
-            _textBox.Top = 4;
-            _textBox.Left = 5;
-            this.Height = _textBox.Top + _textBox.Height + _textBox.Top;
+            textBox.Top = 4;
+            textBox.Left = 5;
 
-            rectBtn =
-                    new System.Drawing.Rectangle(this.ClientRectangle.Width - 18,
-                    this.ClientRectangle.Top, 18, _textBox.Height + 2 * _textBox.Top);
+            this.Height = textBox.Top + textBox.Height + textBox.Top;
+            rectContent = new Rectangle(ClientRectangle.Left, ClientRectangle.Top, ClientRectangle.Width, this.Height);
 
+            rectBtn = new System.Drawing.Rectangle(this.ClientRectangle.Width - 18, this.ClientRectangle.Top, 18, this.Height);
+            textBox.Width = rectBtn.Left - 1 - textBox.Left;
 
-            _textBox.Width = rectBtn.Left - 1 - _textBox.Left;
-
-            rectContent = new Rectangle(ClientRectangle.Left, ClientRectangle.Top,
-                ClientRectangle.Width, _textBox.Height + 2 * _textBox.Top);
+            _hackBox.Bounds = textBox.Bounds;
 
             this.ResumeLayout();
 
