@@ -92,7 +92,7 @@
          // 
          this.txtChangeLog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-         this.txtChangeLog.BackColor = System.Drawing.SystemColors.Window;
+         this.txtChangeLog.BackColor = System.Drawing.Color.Red;
          this.txtChangeLog.Location = new System.Drawing.Point(12, 64);
          this.txtChangeLog.Multiline = true;
          this.txtChangeLog.Name = "txtChangeLog";

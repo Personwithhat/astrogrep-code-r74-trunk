@@ -57,7 +57,7 @@ namespace AstroGrep.Windows.Forms
          // 
          this.lnkHomePage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
          this.lnkHomePage.AutoSize = true;         
-         this.lnkHomePage.LinkColor = System.Drawing.SystemColors.HotTrack;
+         this.lnkHomePage.LinkColor = System.Drawing.Color.Red;
          this.lnkHomePage.Location = new System.Drawing.Point(12, 246);
          this.lnkHomePage.Name = "lnkHomePage";
          this.lnkHomePage.Size = new System.Drawing.Size(130, 15);
@@ -71,7 +71,7 @@ namespace AstroGrep.Windows.Forms
          // 
          this.LicenseLinkLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
          this.LicenseLinkLabel.AutoSize = true;
-         this.LicenseLinkLabel.LinkColor = System.Drawing.SystemColors.HotTrack;
+         this.LicenseLinkLabel.LinkColor = System.Drawing.Color.Red;
          this.LicenseLinkLabel.Location = new System.Drawing.Point(485, 246);
          this.LicenseLinkLabel.Name = "LicenseLinkLabel";
          this.LicenseLinkLabel.Size = new System.Drawing.Size(80, 15);

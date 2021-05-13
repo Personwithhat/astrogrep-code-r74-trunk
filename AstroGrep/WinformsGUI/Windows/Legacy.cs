@@ -638,17 +638,17 @@ namespace AstroGrep.Windows
          }
          if (Registry.CheckStartupSetting("HighlightBackColor"))
          {
-            AstroGrep.Core.GeneralSettings.HighlightBackColor = Convertors.ConvertColorToString(Registry.GetStartupSetting("HighlightBackColor", System.Drawing.SystemColors.Window));
+            AstroGrep.Core.GeneralSettings.HighlightBackColor = Convertors.ConvertColorToString(Registry.GetStartupSetting("HighlightBackColor", System.Drawing.Color.Red));
             Registry.DeleteStartupSetting("HighlightBackColor");
          }
          if (Registry.CheckStartupSetting("ResultsForeColor"))
          {
-            AstroGrep.Core.GeneralSettings.ResultsForeColor = Convertors.ConvertColorToString(Registry.GetStartupSetting("ResultsForeColor", System.Drawing.SystemColors.WindowText));
+            AstroGrep.Core.GeneralSettings.ResultsForeColor = Convertors.ConvertColorToString(Registry.GetStartupSetting("ResultsForeColor", System.Drawing.Color.Red));
             Registry.DeleteStartupSetting("ResultsForeColor");
          }
          if (Registry.CheckStartupSetting("ResultsBackColor"))
          {
-            AstroGrep.Core.GeneralSettings.ResultsBackColor = Convertors.ConvertColorToString(Registry.GetStartupSetting("ResultsBackColor", System.Drawing.SystemColors.Window));
+            AstroGrep.Core.GeneralSettings.ResultsBackColor = Convertors.ConvertColorToString(Registry.GetStartupSetting("ResultsBackColor", System.Drawing.Color.Red));
             Registry.DeleteStartupSetting("ResultsBackColor");
          }
       }

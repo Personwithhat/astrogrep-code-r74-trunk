@@ -51,7 +51,7 @@ namespace AstroGrep.Windows.Forms
          this.cboPathMRUCount = new System.Windows.Forms.ComboBox();
          this.lblStoredPaths = new System.Windows.Forms.Label();
          this.tabFileEncoding = new System.Windows.Forms.TabPage();
-         this.cboForceEncoding = new System.Windows.Forms.ComboBox();
+         this.cboForceEncoding = new BNComboBox();
          this.lblForceEncoding = new System.Windows.Forms.Label();
          this.btnCacheClear = new System.Windows.Forms.Button();
          this.chkUseEncodingCache = new System.Windows.Forms.CheckBox();
@@ -326,7 +326,7 @@ namespace AstroGrep.Windows.Forms
             | System.Windows.Forms.AnchorStyles.Right)));
          this.lblStoredPaths.BackColor = System.Drawing.Color.Transparent;
          this.lblStoredPaths.Cursor = System.Windows.Forms.Cursors.Default;
-         this.lblStoredPaths.ForeColor = System.Drawing.SystemColors.ControlText;
+         this.lblStoredPaths.ForeColor = System.Drawing.Color.Red;
          this.lblStoredPaths.Location = new System.Drawing.Point(80, 12);
          this.lblStoredPaths.Name = "lblStoredPaths";
          this.lblStoredPaths.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -358,13 +358,13 @@ namespace AstroGrep.Windows.Forms
          // cboForceEncoding
          // 
          this.cboForceEncoding.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-         this.cboForceEncoding.FlatStyle = System.Windows.Forms.FlatStyle.System;
+        // this.cboForceEncoding.FlatStyle = System.Windows.Forms.FlatStyle.System;
          this.cboForceEncoding.FormattingEnabled = true;
          this.cboForceEncoding.Location = new System.Drawing.Point(144, 92);
          this.cboForceEncoding.Name = "cboForceEncoding";
          this.cboForceEncoding.Size = new System.Drawing.Size(254, 23);
          this.cboForceEncoding.TabIndex = 45;
-         this.cboForceEncoding.DropDown += new System.EventHandler(this.cboForceEncoding_DropDown);
+        // this.cboForceEncoding.DropDown += new System.EventHandler(this.cboForceEncoding_DropDown);
          // 
          // lblForceEncoding
          // 
@@ -1168,7 +1168,7 @@ namespace AstroGrep.Windows.Forms
       private Panel pnlResultsPreview;
       private Label lblResultPreview;
       private RichTextBox rtxtResultsPreview;
-      private ComboBox cboForceEncoding;
+      private BNComboBox cboForceEncoding;
       private Label lblForceEncoding;
       private Label lblResultsBeforeAfterCount;
       private Label lblResultsLongLineCount;

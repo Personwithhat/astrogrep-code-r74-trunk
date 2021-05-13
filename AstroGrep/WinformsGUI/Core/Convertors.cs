@@ -46,7 +46,7 @@ namespace AstroGrep.Core
       /// <history>
       /// [Curtis_Beard]		11/03/2006	Created
       /// </history>
-      public static string GetComboBoxEntriesAsString(System.Windows.Forms.ComboBox combo)
+      public static string GetComboBoxEntriesAsString(BNComboBox combo)
       {
          string[] entries = new string[combo.Items.Count];
 
@@ -267,7 +267,7 @@ namespace AstroGrep.Core
       /// <history>
       /// [Curtis_Beard]    11/21/2005	Created
       /// </history>
-      public static int CalculateDropDownWidth(ComboBox combo)
+      public static int CalculateDropDownWidth(BNComboBox combo)
       {
          const int EXTRA = 10;
          int _max = combo.Width;

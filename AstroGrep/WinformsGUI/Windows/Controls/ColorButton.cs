@@ -157,12 +157,12 @@ namespace AstroGrep.Windows.Controls
          g.DrawLine(pen, p1, p2);
 
          // draw the divider line
-         pen = new Pen(SystemColors.ControlDark);
+         pen = new Pen(Color.Red);
          p1 = new Point(r.Width - 13, 4);
          p2 = new Point(r.Width - 13, r.Height - 5);
          g.DrawLine(pen, p1, p2);
 
-         pen = new Pen(SystemColors.ControlLightLight);
+         pen = new Pen(Color.Red);
          p1 = new Point(r.Width - 12, 4);
          p2 = new Point(r.Width - 12, r.Height - 5);
          g.DrawLine(pen, p1, p2);
@@ -465,21 +465,21 @@ namespace AstroGrep.Windows.Controls
 
             if (state == 1) //mouse over
             {
-               pen1 = new Pen(SystemColors.ControlLightLight);
-               pen2 = new Pen(SystemColors.ControlDarkDark);
+               pen1 = new Pen(Color.Red);
+               pen2 = new Pen(Color.Red);
             }
             else
             {
                if (state == 2) //clicked
                {
                   //neutral
-                  pen1 = new Pen(SystemColors.ControlDarkDark);
-                  pen2 = new Pen(SystemColors.ControlLightLight);                  
+                  pen1 = new Pen(Color.Red);
+                  pen2 = new Pen(Color.Red);                  
                }
                else
                {
-                  pen1 = new Pen(SystemColors.ControlDark);
-                  pen2 = new Pen(SystemColors.ControlDark);
+                  pen1 = new Pen(Color.Red);
+                  pen2 = new Pen(Color.Red);
                }
             }
 

@@ -13,9 +13,9 @@ namespace AstroGrep.Windows.Forms
       private AstroGrep.Windows.Controls.TextEditorEx txtHits;
       private System.Windows.Forms.Integration.ElementHost textElementHost;
       private System.Windows.Forms.Panel pnlSearch;
-      private System.Windows.Forms.ComboBox cboSearchForText;
-      private System.Windows.Forms.ComboBox cboFileName;
-      private System.Windows.Forms.ComboBox cboFilePath;
+      private BNComboBox cboSearchForText;
+      private BNComboBox cboFileName;
+      private BNComboBox cboFilePath;
       private System.Windows.Forms.Button btnCancel;
       private System.Windows.Forms.Button btnSearch;
       private System.Windows.Forms.Panel pnlSearchOptions;
@@ -142,9 +142,9 @@ namespace AstroGrep.Windows.Forms
             this.picBrowse = new AstroGrep.Windows.Controls.PictureButton();
             this.btnSearch = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.cboFilePath = new System.Windows.Forms.ComboBox();
-            this.cboFileName = new System.Windows.Forms.ComboBox();
-            this.cboSearchForText = new System.Windows.Forms.ComboBox();
+            this.cboFilePath = new BNComboBox();
+            this.cboFileName = new BNComboBox();
+            this.cboSearchForText = new BNComboBox();
             this.lblSearchText = new System.Windows.Forms.Label();
             this.lblFileTypes = new System.Windows.Forms.Label();
             this.lblSearchPath = new System.Windows.Forms.Label();
@@ -241,7 +241,7 @@ namespace AstroGrep.Windows.Forms
             // pnlSearch
             // 
             this.pnlSearch.AutoScroll = true;
-            this.pnlSearch.BackColor = System.Drawing.SystemColors.Window;
+            this.pnlSearch.BackColor = System.Drawing.Color.Red;
             this.pnlSearch.Controls.Add(this.pnlSearchOptions);
             this.pnlSearch.Controls.Add(this.pnlMainSearch);
             this.pnlSearch.Dock = System.Windows.Forms.DockStyle.Left;
@@ -285,13 +285,13 @@ namespace AstroGrep.Windows.Forms
             // 
             // lnkExclusions
             // 
-            this.lnkExclusions.ActiveLinkColor = System.Drawing.SystemColors.HotTrack;
+            this.lnkExclusions.ActiveLinkColor = System.Drawing.Color.Red;
             this.lnkExclusions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lnkExclusions.BackColor = System.Drawing.SystemColors.Window;
+            this.lnkExclusions.BackColor = System.Drawing.Color.Red;
             this.lnkExclusions.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.lnkExclusions.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
-            this.lnkExclusions.LinkColor = System.Drawing.SystemColors.HotTrack;
+            this.lnkExclusions.LinkColor = System.Drawing.Color.Red;
             this.lnkExclusions.Location = new System.Drawing.Point(21, 234);
             this.lnkExclusions.Name = "lnkExclusions";
             this.lnkExclusions.Size = new System.Drawing.Size(269, 20);
@@ -417,7 +417,7 @@ namespace AstroGrep.Windows.Forms
             // 
             this.lblSearchOptions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblSearchOptions.BackColor = System.Drawing.SystemColors.Window;
+            this.lblSearchOptions.BackColor = System.Drawing.Color.Red;
             this.lblSearchOptions.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(127)))), ((int)(((byte)(6)))));
             this.lblSearchOptions.Location = new System.Drawing.Point(16, 15);
             this.lblSearchOptions.Name = "lblSearchOptions";
@@ -462,7 +462,7 @@ namespace AstroGrep.Windows.Forms
             // 
             // btnSearch
             // 
-            this.btnSearch.BackColor = System.Drawing.SystemColors.Control;
+            this.btnSearch.BackColor = System.Drawing.Color.Red;
             this.btnSearch.Location = new System.Drawing.Point(23, 182);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(85, 25);
@@ -474,7 +474,7 @@ namespace AstroGrep.Windows.Forms
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.BackColor = System.Drawing.SystemColors.Control;
+            this.btnCancel.BackColor = System.Drawing.Color.Red;
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Enabled = false;
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.System;
@@ -488,6 +488,8 @@ namespace AstroGrep.Windows.Forms
             // 
             // cboFilePath
             // 
+           // this.cboFilePath.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            //this.cboFilePath.DropDownStyle = ComboBoxStyle.DropDownList;
             this.cboFilePath.AllowDrop = true;
             this.cboFilePath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -495,9 +497,15 @@ namespace AstroGrep.Windows.Forms
             this.cboFilePath.Name = "cboFilePath";
             this.cboFilePath.Size = new System.Drawing.Size(216, 23);
             this.cboFilePath.TabIndex = 1;
-            this.cboFilePath.DropDown += new System.EventHandler(this.cboFilePath_DropDown);
+            //this.cboFilePath.DropDown += new System.EventHandler(this.cboFilePath_DropDown);
             this.cboFilePath.DragDrop += new System.Windows.Forms.DragEventHandler(this.cboFilePath_DragDrop);
             this.cboFilePath.DragEnter += new System.Windows.Forms.DragEventHandler(this.cboFilePath_DragEnter);
+
+
+           // this.cboFilePath.DrawItem += new DrawItemEventHandler(this.cbo_DrawItem);
+
+
+
             // 
             // cboFileName
             // 
@@ -507,7 +515,7 @@ namespace AstroGrep.Windows.Forms
             this.cboFileName.Name = "cboFileName";
             this.cboFileName.Size = new System.Drawing.Size(242, 23);
             this.cboFileName.TabIndex = 2;
-            this.cboFileName.DropDown += new System.EventHandler(this.cboFileName_DropDown);
+          //  this.cboFileName.DropDown += new System.EventHandler(this.cboFileName_DropDown);
             // 
             // cboSearchForText
             // 
@@ -517,7 +525,7 @@ namespace AstroGrep.Windows.Forms
             this.cboSearchForText.Name = "cboSearchForText";
             this.cboSearchForText.Size = new System.Drawing.Size(242, 23);
             this.cboSearchForText.TabIndex = 3;
-            this.cboSearchForText.DropDown += new System.EventHandler(this.cboSearchForText_DropDown);
+           // this.cboSearchForText.DropDown += new System.EventHandler(this.cboSearchForText_DropDown);
             // 
             // lblSearchText
             // 
@@ -560,7 +568,7 @@ namespace AstroGrep.Windows.Forms
             // 
             this.lblSearchHeading.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblSearchHeading.BackColor = System.Drawing.SystemColors.Window;
+            this.lblSearchHeading.BackColor = System.Drawing.Color.Red;
             this.lblSearchHeading.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(127)))), ((int)(((byte)(6)))));
             this.lblSearchHeading.Location = new System.Drawing.Point(16, 9);
             this.lblSearchHeading.Name = "lblSearchHeading";
@@ -573,7 +581,7 @@ namespace AstroGrep.Windows.Forms
             // 
             // pnlRightSide
             // 
-            this.pnlRightSide.BackColor = System.Drawing.SystemColors.Window;
+            this.pnlRightSide.BackColor = System.Drawing.Color.Red;
             this.pnlRightSide.Controls.Add(this.textElementHost);
             this.pnlRightSide.Controls.Add(this.splitUpDown);
             this.pnlRightSide.Controls.Add(this.lstFileNames);
@@ -595,7 +603,7 @@ namespace AstroGrep.Windows.Forms
             // 
             // splitUpDown
             // 
-            this.splitUpDown.BackColor = System.Drawing.SystemColors.Control;
+            this.splitUpDown.BackColor = System.Drawing.Color.Red;
             this.splitUpDown.Cursor = System.Windows.Forms.Cursors.SizeNS;
             this.splitUpDown.Dock = System.Windows.Forms.DockStyle.Top;
             this.splitUpDown.Location = new System.Drawing.Point(2, 192);

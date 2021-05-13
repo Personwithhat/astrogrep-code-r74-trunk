@@ -263,20 +263,7 @@ namespace AstroGrep.Windows.Forms
       /// </history>
       private void pnlSearch_SizeChanged(object sender, EventArgs e)
       {
-         string temp = cboFilePath.Text;
-         cboFilePath.DropDownStyle = ComboBoxStyle.DropDownList;
-         cboFilePath.DropDownStyle = ComboBoxStyle.DropDown;
-         cboFilePath.Text = temp;
 
-         temp = cboFileName.Text;
-         cboFileName.DropDownStyle = ComboBoxStyle.Simple;
-         cboFileName.DropDownStyle = ComboBoxStyle.DropDown;
-         cboFileName.Text = temp;
-
-         temp = cboSearchForText.Text;
-         cboSearchForText.DropDownStyle = ComboBoxStyle.Simple;
-         cboSearchForText.DropDownStyle = ComboBoxStyle.DropDown;
-         cboSearchForText.Text = temp;
       }
 
       /// <summary>
@@ -1064,7 +1051,7 @@ namespace AstroGrep.Windows.Forms
       /// [Curtis_Beard]	   10/11/2006	Created
       /// [Curtis_Beard]	   11/22/2006	CHG: Remove use of browse in combobox
       /// </history>
-      private void LoadComboBoxEntry(System.Windows.Forms.ComboBox combo, string values)
+      private void LoadComboBoxEntry(BNComboBox combo, string values)
       {
          if (!values.Equals(string.Empty))
          {
@@ -1078,12 +1065,13 @@ namespace AstroGrep.Windows.Forms
                   start = GeneralSettings.MaximumMRUPaths;
                }
 
-               combo.BeginUpdate();
+               // PERSONAL TODO?
+               //combo.BeginUpdate();
                for (int i = start - 1; i > -1; i--)
                {
                   AddComboSelection(combo, items[i]);
                }
-               combo.EndUpdate();
+              // combo.EndUpdate();
             }
          }
       }
@@ -1278,7 +1266,7 @@ namespace AstroGrep.Windows.Forms
       /// [Curtis_Beard]	   05/09/2007	CHG: check for a valid item
       /// [Ed_Jakubowski]	   05/26/2009	CHG: Added if Contains for testing combo item... this helps astrogrep run in mono 2.4
       /// </history>
-      private static void AddComboSelection(ComboBox combo, string item)
+      private static void AddComboSelection(BNComboBox combo, string item)
       {
          if (item.Length > 0)
          {
@@ -3600,7 +3588,7 @@ namespace AstroGrep.Windows.Forms
          stbStatus.InvokeIfRequired(() =>
          {
             sbFilterCountPanel.Text = string.Format(Language.GetGenericText("ResultsStatusFilterCount"), count);
-            sbFilterCountPanel.BackColor = count > 0 ? Color.Yellow : SystemColors.Control;
+            sbFilterCountPanel.BackColor = count > 0 ? Color.Yellow : Color.Red;
          });
       }
 
@@ -3618,7 +3606,7 @@ namespace AstroGrep.Windows.Forms
          stbStatus.InvokeIfRequired(() => 
          {
             sbErrorCountPanel.Text = string.Format(Language.GetGenericText("ResultsStatusErrorCount"), count);
-            sbErrorCountPanel.BackColor = count > 0 ? Color.Red : SystemColors.Control;
+            sbErrorCountPanel.BackColor = count > 0 ? Color.Red : Color.Red;
          });
       }
 
@@ -4260,7 +4248,7 @@ namespace AstroGrep.Windows.Forms
       /// Sets the form's text to include the first entry of the search path's
       /// </summary>
       /// <history>
-      /// [Curtis_Beard]	   09/18/2013	CHG: 64/53, add search path to window title
+      /// [Curtis_Beard]	   09/18/2013	CHG: 64/53, add search path to window title     
       /// [Curtis_Beard]		06/15/2015	CHG: 57, support external language files
       /// [Curtis_Beard]		07/09/2015	FIX: prevent repeating folder text
       /// </history>
@@ -4290,6 +4278,6 @@ namespace AstroGrep.Windows.Forms
             catch { }
          });
       }
-      #endregion
-   }
+        #endregion
+    }
 }
