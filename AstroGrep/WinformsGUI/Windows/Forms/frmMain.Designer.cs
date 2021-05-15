@@ -637,6 +637,7 @@ namespace AstroGrep.Windows.Forms
             this.lstFileNames.OwnerDraw = true;
             this.lstFileNames.DrawColumnHeader += new DrawListViewColumnHeaderEventHandler(lv_DrawColumnHeader);
             this.lstFileNames.DrawSubItem += new DrawListViewSubItemEventHandler(lv_DrawSubItem);
+            this.lstFileNames.SizeChanged += new EventHandler(lv_SizeChanged);
 
             // 
             // fileLstMnu

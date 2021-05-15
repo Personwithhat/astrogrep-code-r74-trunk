@@ -945,6 +945,9 @@ namespace AstroGrep.Windows.Forms
             lstFileNames.Columns[Constants.COLUMN_INDEX_COUNT].Width = GeneralSettings.WindowFileColumnCountWidth;
          else
             lstFileNames.Columns[Constants.COLUMN_INDEX_COUNT].Width = Constants.COLUMN_WIDTH_COUNT * GeneralSettings.WindowsDPIPerCentSetting / 100;
+
+         // Resize last columnn to avoid horizontal scroll bar.
+         lv_SizeChanged(lstFileNames, new EventArgs());
       }
 
       /// <summary>
@@ -4363,5 +4366,31 @@ namespace AstroGrep.Windows.Forms
                 path.Dispose();
             }
         }
+
+        private bool Resizing = false;
+        void lv_SizeChanged(object sender, EventArgs e)
+        {
+            ListView listView = sender as ListView;
+
+            if (!Resizing)  
+            {
+                Resizing = true;
+                var col1 = listView.Columns[listView.Columns.Count - 1];
+
+                int totalColumnWidth = -col1.Width;
+                for (int i = 0; i < listView.Columns.Count; i++)
+                    totalColumnWidth += listView.Columns[i].Width;
+
+                int wndStyle = Windows.API.ListViewExtensions.GetWindowLong(listView.Handle, Windows.API.ListViewExtensions.GWL_STYLE);
+                bool vsVisible = (wndStyle & Windows.API.ListViewExtensions.WS_VSCROLL) != 0;
+
+                col1.Width = (listView.Width - totalColumnWidth) - (vsVisible ? SystemInformation.VerticalScrollBarWidth : 0);
+
+                Resizing = false;
+            }
+        }
+
+
+
+        }
     }
-}
