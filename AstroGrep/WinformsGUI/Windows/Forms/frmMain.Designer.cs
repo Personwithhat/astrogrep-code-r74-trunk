@@ -272,7 +272,7 @@ namespace AstroGrep.Windows.Forms
             this.PanelOptionsContainer.Controls.Add(this.chkAllResultsAfterSearch);
             this.PanelOptionsContainer.Controls.Add(this.txtContextLines);
             this.PanelOptionsContainer.Controls.Add(this.chkWholeWordOnly);
-            this.PanelOptionsContainer.Controls.Add(this.chkRegularExpressions);
+            this.PanelOptionsContainer.Controls.Add(this.chkRegularExpressions);    
             this.PanelOptionsContainer.Controls.Add(this.chkSearchInResults);
             this.PanelOptionsContainer.Controls.Add(this.chkNegation);
             this.PanelOptionsContainer.Controls.Add(this.chkFileNamesOnly);
@@ -285,13 +285,12 @@ namespace AstroGrep.Windows.Forms
             // 
             // lnkExclusions
             // 
-            this.lnkExclusions.ActiveLinkColor = System.Drawing.Color.Red;
+            this.lnkExclusions.ActiveLinkColor = System.Drawing.SystemColors.HotTrack;
             this.lnkExclusions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lnkExclusions.BackColor = System.Drawing.Color.Red;
             this.lnkExclusions.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.lnkExclusions.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
-            this.lnkExclusions.LinkColor = System.Drawing.Color.Red;
+            this.lnkExclusions.LinkColor = System.Drawing.SystemColors.HotTrack;
             this.lnkExclusions.Location = new System.Drawing.Point(21, 234);
             this.lnkExclusions.Name = "lnkExclusions";
             this.lnkExclusions.Size = new System.Drawing.Size(269, 20);
@@ -417,7 +416,6 @@ namespace AstroGrep.Windows.Forms
             // 
             this.lblSearchOptions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblSearchOptions.BackColor = System.Drawing.Color.Red;
             this.lblSearchOptions.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(127)))), ((int)(((byte)(6)))));
             this.lblSearchOptions.Location = new System.Drawing.Point(16, 15);
             this.lblSearchOptions.Name = "lblSearchOptions";
@@ -462,7 +460,8 @@ namespace AstroGrep.Windows.Forms
             // 
             // btnSearch
             // 
-            this.btnSearch.BackColor = System.Drawing.Color.Red;
+            this.btnSearch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.btnSearch.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(15)))), ((int)(((byte)(6)))));
             this.btnSearch.Location = new System.Drawing.Point(23, 182);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(85, 25);
@@ -473,8 +472,9 @@ namespace AstroGrep.Windows.Forms
             // 
             // btnCancel
             // 
+            this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.btnCancel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(15)))), ((int)(((byte)(6)))));
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.BackColor = System.Drawing.Color.Red;
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Enabled = false;
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.System;
@@ -568,7 +568,6 @@ namespace AstroGrep.Windows.Forms
             // 
             this.lblSearchHeading.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblSearchHeading.BackColor = System.Drawing.Color.Red;
             this.lblSearchHeading.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(127)))), ((int)(((byte)(6)))));
             this.lblSearchHeading.Location = new System.Drawing.Point(16, 9);
             this.lblSearchHeading.Name = "lblSearchHeading";

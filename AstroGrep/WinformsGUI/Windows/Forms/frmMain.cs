@@ -3589,10 +3589,12 @@ namespace AstroGrep.Windows.Forms
       /// </history>
       private void SetStatusBarFilterCount(int count)
       {
-         stbStatus.InvokeIfRequired(() =>
+            Color normal = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+
+            stbStatus.InvokeIfRequired(() =>
          {
             sbFilterCountPanel.Text = string.Format(Language.GetGenericText("ResultsStatusFilterCount"), count);
-            sbFilterCountPanel.BackColor = count > 0 ? Color.Yellow : Color.Red;
+            sbFilterCountPanel.ForeColor = count > 0 ? Color.Yellow : normal;
          });
       }
 
@@ -3607,10 +3609,12 @@ namespace AstroGrep.Windows.Forms
       /// </history>
       private void SetStatusBarErrorCount(int count)
       {
-         stbStatus.InvokeIfRequired(() => 
+           Color normal = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+
+            stbStatus.InvokeIfRequired(() => 
          {
             sbErrorCountPanel.Text = string.Format(Language.GetGenericText("ResultsStatusErrorCount"), count);
-            sbErrorCountPanel.BackColor = count > 0 ? Color.Red : Color.Red;
+            sbErrorCountPanel.ForeColor = count > 0 ? Color.Red : normal;
          });
       }
 
