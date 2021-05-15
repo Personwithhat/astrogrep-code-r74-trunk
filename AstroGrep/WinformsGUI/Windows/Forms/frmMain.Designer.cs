@@ -633,6 +633,11 @@ namespace AstroGrep.Windows.Forms
             this.lstFileNames.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lstFileNames_KeyDown);
             this.lstFileNames.Leave += new System.EventHandler(this.lstFileNames_Leave);
             this.lstFileNames.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lstFileNames_MouseDown);
+
+            this.lstFileNames.OwnerDraw = true;
+            this.lstFileNames.DrawColumnHeader += new DrawListViewColumnHeaderEventHandler(lv_DrawColumnHeader);
+            this.lstFileNames.DrawSubItem += new DrawListViewSubItemEventHandler(lv_DrawSubItem);
+
             // 
             // fileLstMnu
             // 

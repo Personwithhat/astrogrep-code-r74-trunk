@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -555,7 +556,7 @@ namespace AstroGrep.Windows.Forms
          // Call the sort method to manually sort.
          lstFileNames.Sort();
 
-         // Display sort image and highlight sort column
+         // Display sort image and highlight sort column - NOTE: Using custom header-draw now. This is to refresh headers now.
          Windows.API.ListViewExtensions.SetSortIcon(lstFileNames, e.Column, lstFileNames.Sorting);
 
          // Apply theming since sorting removes it.
@@ -4279,5 +4280,88 @@ namespace AstroGrep.Windows.Forms
          });
       }
         #endregion
+
+
+
+
+        void lv_DrawSubItem(object sender, DrawListViewSubItemEventArgs e)
+        {
+           ListView lv = sender as ListView;
+           if ((e.ItemState & ListViewItemStates.Focused) != 0)
+           {
+                Color hColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(55)))), ((int)(((byte)(55)))));
+                e.Graphics.FillRectangle(new SolidBrush(hColor),e.Bounds);
+              //e.Graphics.DrawString(e.SubItem.Text, lv.Font,SystemBrushes.HighlightText, e.Bounds);
+              //e.Graphics.DrawRectangle(new Pen(SystemBrushes.HighlightText), e.Bounds);
+            }
+            else
+              e.DrawBackground();
+
+            e.DrawText();
+        }
+
+        void lv_DrawColumnHeader(object sender,DrawListViewColumnHeaderEventArgs e)
+        {
+            ListView listView = sender as ListView;
+
+            Color hColor = System.Drawing.Color.FromArgb(((int)(((byte)(88)))), ((int)(((byte)(88)))), ((int)(((byte)(88)))));
+            Color hColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(55)))), ((int)(((byte)(55)))));
+            Color ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            Color mainBack = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(15)))), ((int)(((byte)(6)))));
+
+            Brush brush = new SolidBrush(mainBack);
+            e.Graphics.FillRectangle(brush, e.Bounds);
+
+            Rectangle bounds = e.Bounds;
+
+            bounds.Width -= 1;
+            bounds.Height -= 1;
+
+            e.Graphics.DrawRectangle(SystemPens.ControlDarkDark, bounds);
+
+            bounds.Width -= 1;
+            bounds.Height -= 1;
+
+            e.Graphics.DrawLine(new Pen(hColor), bounds.X, bounds.Y, bounds.Right, bounds.Y);
+            e.Graphics.DrawLine(new Pen(hColor), bounds.X, bounds.Y, bounds.X, bounds.Bottom);
+            e.Graphics.DrawLine(new Pen(hColor2), (bounds.X + 1), bounds.Bottom, bounds.Right, bounds.Bottom);
+            e.Graphics.DrawLine(new Pen(hColor2), bounds.Right, (bounds.Y + 1), bounds.Right, bounds.Bottom);
+
+            HorizontalAlignment textAlign = e.Header.TextAlign;
+            TextFormatFlags flags = (textAlign == HorizontalAlignment.Left) ? System.Windows.Forms.TextFormatFlags.GlyphOverhangPadding : System.Windows.Forms.TextFormatFlags.HorizontalCenter | System.Windows.Forms.TextFormatFlags.Right;
+            flags = (flags | TextFormatFlags.VerticalCenter);
+
+            // Draw header text
+            string text = e.Header.Text;
+            int width = TextRenderer.MeasureText(" ", e.Font).Width;
+            bounds = Rectangle.Inflate(e.Bounds, -width, 0);
+            TextRenderer.DrawText(e.Graphics, text, e.Font, bounds, ForeColor, flags);
+
+            // Draw the Glimph based on sort order.
+            var comp = listView.ListViewItemSorter as ListViewItemComparer;
+            if (comp != null && comp.col == e.ColumnIndex)
+            {
+                Rectangle rectGlimph = bounds;
+                rectGlimph.Location = new Point(rectGlimph.Location.X + TextRenderer.MeasureText(text, e.Font).Width, rectGlimph.Location.Y);
+                rectGlimph.Width = 10;
+
+                e.Graphics.TranslateTransform(rectGlimph.Left + rectGlimph.Width / 2.0f, rectGlimph.Top + rectGlimph.Height / 2.0f);
+                GraphicsPath path = new GraphicsPath();
+                PointF[] points = new PointF[3];
+                points[0] = new PointF(-6 / 2.0f, -3 / 2.0f);
+                points[1] = new PointF(6 / 2.0f, -3 / 2.0f);
+                points[2] = new PointF(0, 6 / 2.0f);
+                path.AddLine(points[0], points[1]);
+                path.AddLine(points[1], points[2]);
+                path.CloseFigure();
+                e.Graphics.RotateTransform(comp.order == SortOrder.Descending ? 180 : 0);
+
+                SolidBrush br = new SolidBrush(Enabled ? Color.Gray : Color.Gainsboro);
+                e.Graphics.FillPath(br, path);
+                e.Graphics.ResetTransform();
+                br.Dispose();
+                path.Dispose();
+            }
+        }
     }
 }

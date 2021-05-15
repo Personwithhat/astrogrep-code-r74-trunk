@@ -35,8 +35,8 @@ namespace AstroGrep.Windows
    /// </history>
    internal class ListViewItemComparer : IComparer
    {
-      private int col;
-      private SortOrder order;
+     public int col;
+     public SortOrder order;
 
       /// <summary>
       /// Initializes a new instance of the ListViewItemComparer class.
